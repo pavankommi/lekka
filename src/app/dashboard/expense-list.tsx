@@ -33,7 +33,7 @@ export function ExpenseList({
     try {
       await deleteMutation.mutateAsync(id);
       toast.success("Expense deleted");
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete expense");
     }
   };
