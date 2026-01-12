@@ -1,21 +1,7 @@
 "use server";
 
-import PocketBase from "pocketbase";
-import { cookies } from "next/headers";
-import { PB_URL } from "@/lib/pocketbase-client";
+import { getServerPB } from "@/lib/pocketbase";
 import type { Expense } from "@/lib/types";
-
-async function getServerPB() {
-  const pb = new PocketBase(PB_URL);
-  const cookieStore = await cookies();
-  const authCookie = cookieStore.get("pb_auth");
-
-  if (authCookie) {
-    pb.authStore.loadFromCookie(`pb_auth=${authCookie.value}`);
-  }
-
-  return pb;
-}
 
 export async function getExpenses(year: number, month: number): Promise<Expense[]> {
   const pb = await getServerPB();
