@@ -24,7 +24,7 @@ export function ExpenseList({
   month: number;
   sortBy: "date" | "amount";
 }) {
-  const { data: expenses = [], isLoading } = useExpenses(year, month, sortBy);
+  const { data: expenses = [], isLoading, error } = useExpenses(year, month, sortBy);
   const deleteMutation = useDeleteExpense();
 
   const handleDelete = async (id: string) => {
@@ -40,6 +40,14 @@ export function ExpenseList({
 
   if (isLoading) {
     return <p className="text-gray-500 text-center py-8">Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="text-red-600 text-center py-8">
+        Failed to load expenses. Please try again.
+      </p>
+    );
   }
 
   if (expenses.length === 0) {
