@@ -62,8 +62,8 @@ export function ExpenseList({ year, month }: { year: number; month: number }) {
                 key={expense.id}
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group"
               >
-                <div className="flex-1">
-                  <p className="font-medium text-gray-900">{expense.description}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-gray-900 truncate">{expense.description}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <p className="text-lg font-semibold text-gray-900">{formatCurrency(expense.amount)}</p>
