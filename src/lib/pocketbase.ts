@@ -23,5 +23,5 @@ export async function isAuthenticated() {
 
 export async function getCurrentUser() {
   const pb = await getServerPB();
-  return pb.authStore.model;
+  return pb.authStore.record;
 }

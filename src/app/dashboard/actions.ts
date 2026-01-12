@@ -27,12 +27,12 @@ export async function getExpenses(year: number, month: number): Promise<Expense[
   const startDate = new Date(year, month, 1).toISOString();
   const endDate = new Date(year, month + 1, 0, 23, 59, 59).toISOString();
 
-  const records = await pb.collection("expenses").getFullList({
+  const records = await pb.collection<Expense>("expenses").getFullList({
     sort: "-created",
-    filter: `user = "${pb.authStore.model?.id}" && created >= "${startDate}" && created <= "${endDate}"`,
+    filter: `user = "${pb.authStore.record?.id}" && created >= "${startDate}" && created <= "${endDate}"`,
   });
 
-  return records as Expense[];
+  return records;
 }
 
 export async function addExpense(description: string, amount: number, date: string) {
@@ -42,8 +42,8 @@ export async function addExpense(description: string, amount: number, date: stri
     throw new Error("Not authenticated");
   }
 
-  await pb.collection("expenses").create({
-    user: pb.authStore.model?.id,
+  await pb.collection<Expense>("expenses").create({
+    user: pb.authStore.record?.id,
     description,
     amount,
     created: new Date(date).toISOString(),
@@ -57,5 +57,5 @@ export async function deleteExpense(id: string) {
     throw new Error("Not authenticated");
   }
 
-  await pb.collection("expenses").delete(id);
+  await pb.collection<Expense>("expenses").delete(id);
 }

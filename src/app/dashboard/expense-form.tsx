@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { expenseSchema, type ExpenseFormData } from "@/lib/schema";
@@ -9,17 +9,20 @@ import { toast } from "sonner";
 
 export function ExpenseForm() {
   const addMutation = useAddExpense();
+
+  const form = useForm<ExpenseFormData>({
+    resolver: zodResolver(expenseSchema) as Resolver<ExpenseFormData>,
+    defaultValues: {
+      date: format(new Date(), "yyyy-MM-dd"),
+    },
+  });
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<ExpenseFormData>({
-    resolver: zodResolver(expenseSchema),
-    defaultValues: {
-      date: format(new Date(), "yyyy-MM-dd"),
-    },
-  });
+  } = form;
 
   const onSubmit = async (data: ExpenseFormData) => {
     try {
@@ -43,6 +46,7 @@ export function ExpenseForm() {
             {...register("description")}
             type="text"
             placeholder="Description"
+            maxLength={100}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900 placeholder:text-gray-400"
             disabled={isSubmitting}
           />
@@ -54,7 +58,7 @@ export function ExpenseForm() {
         <div className="grid grid-cols-2 gap-3">
           <div>
             <input
-              {...register("amount", { valueAsNumber: true })}
+              {...register("amount")}
               type="number"
               placeholder="0.00"
               step="0.01"

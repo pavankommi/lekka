@@ -14,8 +14,15 @@ export function useAddExpense() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ description, amount, date }: { description: string; amount: number; date: string }) =>
-      addExpense(description, amount, date),
+    mutationFn: ({
+      description,
+      amount,
+      date,
+    }: {
+      description: string;
+      amount: number;
+      date: string;
+    }) => addExpense(description, amount, date),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["expenses"] });
     },
