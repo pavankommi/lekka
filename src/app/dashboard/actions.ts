@@ -3,6 +3,7 @@
 import { getServerPB } from "@/lib/pocketbase";
 import type { Expense } from "@/lib/types";
 import { expenseSchema } from "@/lib/schema";
+import { format, addMonths } from "date-fns";
 
 export async function getExpenses(
   year: number,
@@ -15,14 +16,16 @@ export async function getExpenses(
     return [];
   }
 
-  const startDate = new Date(Date.UTC(year, month, 1)).toISOString();
-  const endDate = new Date(Date.UTC(year, month + 1, 0, 23, 59, 59, 999)).toISOString();
+  // Use date-fns for cleaner date formatting
+  const startDate = format(new Date(year, month, 1), "yyyy-MM-dd");
+  const nextMonthDate = addMonths(new Date(year, month, 1), 1);
+  const nextMonthStr = format(nextMonthDate, "yyyy-MM-dd");
 
   const sortField = sortBy === "date" ? "-expenseDate" : "-amount";
 
   const records = await pb.collection<Expense>("expenses").getFullList({
     sort: sortField,
-    filter: `user = "${pb.authStore.record?.id}" && expenseDate >= "${startDate}" && expenseDate <= "${endDate}"`,
+    filter: `user = "${pb.authStore.record?.id}" && expenseDate >= "${startDate}" && expenseDate < "${nextMonthStr}"`,
   });
 
   return records;
