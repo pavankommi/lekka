@@ -22,7 +22,7 @@ export function GoogleSignIn() {
 
       // Refresh to revalidate server components
       router.refresh();
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       console.error("Auth error:", error);
       toast.error("Sign-in failed. Please try again.");
