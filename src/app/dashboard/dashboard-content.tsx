@@ -1,6 +1,6 @@
 "use client";
 
-import { subMonths, addMonths, format, isSameMonth, startOfMonth } from "date-fns";
+import { subMonths, addMonths, format, isSameMonth, startOfMonth, setDate, getDate } from "date-fns";
 import { parseAsIsoDateTime, parseAsStringLiteral, useQueryState } from "nuqs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ExpenseForm } from "./expense-form";
@@ -30,6 +30,9 @@ export function DashboardContent() {
   const monthName = format(currentDate, "MMMM yyyy");
   const isCurrentMonth = isSameMonth(currentDate, new Date());
 
+  // Default date: selected month/year, but with today's day
+  const defaultFormDate = setDate(currentDate, getDate(new Date()));
+
   const goToPrevMonth = () => setCurrentDate(startOfMonth(subMonths(currentDate, 1)));
   const goToNextMonth = () => setCurrentDate(startOfMonth(addMonths(currentDate, 1)));
 
@@ -58,7 +61,7 @@ export function DashboardContent() {
       </div>
 
       <div className="space-y-4">
-        <ExpenseForm />
+        <ExpenseForm defaultDate={defaultFormDate} />
       </div>
 
       <div className="flex justify-end gap-3 text-xs items-center">
