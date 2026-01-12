@@ -5,9 +5,9 @@ import { cookies } from "next/headers";
 export async function setAuthCookie(token: string) {
   const cookieStore = await cookies();
   cookieStore.set("pb_auth", token, {
-    httpOnly: false,
+    httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "strict",
     path: "/",
     maxAge: 60 * 60 * 24 * 7, // 7 days
   });

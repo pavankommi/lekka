@@ -5,6 +5,7 @@ export interface ExpenseFields {
   user: string;
   description: string;
   amount: number;
+  expenseDate: string;
   created: string;
 }
 

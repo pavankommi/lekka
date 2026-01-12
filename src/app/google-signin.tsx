@@ -3,6 +3,7 @@
 import { createBrowserClient } from "@/lib/pocketbase-client";
 import { useRouter } from "next/navigation";
 import { setAuthCookie } from "./actions";
+import { toast } from "sonner";
 
 export function GoogleSignIn() {
   const router = useRouter();
@@ -24,6 +25,7 @@ export function GoogleSignIn() {
       router.push("/dashboard");
     } catch (error) {
       console.error("Auth error:", error);
+      toast.error("Sign-in failed. Please try again.");
     }
   };
 

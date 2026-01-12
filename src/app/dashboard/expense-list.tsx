@@ -1,6 +1,6 @@
 "use client";
 
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Trash2 } from "lucide-react";
 import { groupBy } from "lodash";
 import { useExpenses, useDeleteExpense } from "./hooks";
@@ -9,9 +9,11 @@ import { toast } from "sonner";
 import { formatCurrency } from "@/lib/currency";
 
 function groupByDay(expenses: Expense[]) {
-  return groupBy(expenses, (expense) =>
-    format(new Date(expense.created), "EEE, MMM d")
-  );
+  return groupBy(expenses, (expense) => {
+    // Extract date portion (YYYY-MM-DD) to avoid timezone shifts
+    const dateOnly = expense.expenseDate.substring(0, 10);
+    return format(parseISO(dateOnly), "EEE, MMM d");
+  });
 }
 
 export function ExpenseList({ year, month }: { year: number; month: number }) {
