@@ -3,10 +3,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getExpenses, addExpense, deleteExpense } from "./actions";
 
-export function useExpenses(year: number, month: number) {
+export function useExpenses(year: number, month: number, sortBy: "date" | "amount") {
   return useQuery({
-    queryKey: ["expenses", year, month],
-    queryFn: () => getExpenses(year, month),
+    queryKey: ["expenses", year, month, sortBy],
+    queryFn: () => getExpenses(year, month, sortBy),
   });
 }
 
