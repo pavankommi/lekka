@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -7,13 +8,13 @@ import { expenseSchema, type ExpenseFormData } from "@/lib/schema";
 import { useAddExpense } from "./hooks";
 import { toast } from "sonner";
 
-export function ExpenseForm() {
+export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
   const addMutation = useAddExpense();
 
   const form = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseSchema) as Resolver<ExpenseFormData>,
     defaultValues: {
-      date: format(new Date(), "yyyy-MM-dd"),
+      date: format(defaultDate, "yyyy-MM-dd"),
     },
   });
 
@@ -24,6 +25,13 @@ export function ExpenseForm() {
     formState: { errors, isSubmitting },
   } = form;
 
+  // Update date field when user switches months
+  useEffect(() => {
+    reset({
+      date: format(defaultDate, "yyyy-MM-dd"),
+    });
+  }, [defaultDate, reset]);
+
   const onSubmit = async (data: ExpenseFormData) => {
     try {
       await addMutation.mutateAsync(data);
@@ -31,7 +39,7 @@ export function ExpenseForm() {
       reset({
         description: "",
         amount: 0,
-        date: format(new Date(), "yyyy-MM-dd"),
+        date: format(defaultDate, "yyyy-MM-dd"),
       });
     } catch (error) {
       toast.error("Failed to add expense");

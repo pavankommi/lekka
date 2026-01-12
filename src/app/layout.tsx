@@ -3,6 +3,7 @@ import { Courier_Prime } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/lib/providers";
 import { Toaster } from "sonner";
+import { Footer } from "./footer";
 
 const courierPrime = Courier_Prime({
   subsets: ["latin"],
@@ -22,8 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={courierPrime.className}>
-      <body className="antialiased">
-        <Providers>{children}</Providers>
+      <body className="antialiased flex flex-col min-h-screen">
+        <Providers>
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </Providers>
         <Toaster />
       </body>
     </html>
