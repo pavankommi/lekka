@@ -23,9 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={courierPrime.className}>
-      <body className="antialiased flex flex-col min-h-screen">
+      <body className="antialiased flex flex-col min-h-screen bg-white">
         <Providers>
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 flex flex-col bg-white">{children}</main>
           <Footer />
         </Providers>
         <Toaster />
