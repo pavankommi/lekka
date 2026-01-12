@@ -1,7 +1,6 @@
 "use client";
 
 import { format, parseISO } from "date-fns";
-import { Trash2 } from "lucide-react";
 import { groupBy } from "lodash";
 import { useExpenses, useDeleteExpense } from "./hooks";
 import type { Expense } from "@/lib/types";
@@ -16,8 +15,16 @@ function groupByDay(expenses: Expense[]) {
   });
 }
 
-export function ExpenseList({ year, month }: { year: number; month: number }) {
-  const { data: expenses = [], isLoading } = useExpenses(year, month);
+export function ExpenseList({
+  year,
+  month,
+  sortBy,
+}: {
+  year: number;
+  month: number;
+  sortBy: "date" | "amount";
+}) {
+  const { data: expenses = [], isLoading } = useExpenses(year, month, sortBy);
   const deleteMutation = useDeleteExpense();
 
   const handleDelete = async (id: string) => {
@@ -50,26 +57,17 @@ export function ExpenseList({ year, month }: { year: number; month: number }) {
       {Object.entries(grouped).map(([day, dayExpenses]) => (
         <div key={day}>
           <h3 className="text-sm font-medium text-gray-500 mb-2">{day}</h3>
-          <div className="space-y-2">
+          <div className="divide-y divide-gray-200">
             {dayExpenses.map((expense) => (
               <div
                 key={expense.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg group"
+                onClick={() => handleDelete(expense.id)}
+                className="flex items-center justify-between py-3 cursor-pointer hover:bg-gray-50 transition-colors"
               >
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-900 truncate">{expense.description}</p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <p className="text-lg font-semibold text-gray-900">{formatCurrency(expense.amount)}</p>
-                  <button
-                    onClick={() => handleDelete(expense.id)}
-                    disabled={deleteMutation.isPending}
-                    className="text-red-600 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-50"
-                    aria-label="Delete expense"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
+                <p className="text-lg font-semibold text-gray-900">{formatCurrency(expense.amount)}</p>
               </div>
             ))}
           </div>

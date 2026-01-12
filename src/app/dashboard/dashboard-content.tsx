@@ -1,7 +1,7 @@
 "use client";
 
 import { subMonths, addMonths, format, isSameMonth, startOfMonth } from "date-fns";
-import { parseAsIsoDateTime, useQueryState } from "nuqs";
+import { parseAsIsoDateTime, parseAsStringLiteral, useQueryState } from "nuqs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ExpenseForm } from "./expense-form";
 import { ExpenseList } from "./expense-list";
@@ -14,9 +14,15 @@ export function DashboardContent() {
     parseAsIsoDateTime.withDefault(startOfMonth(new Date()))
   );
 
+  const [sortBy, setSortBy] = useQueryState(
+    "sort",
+    parseAsStringLiteral(["date", "amount"] as const).withDefault("date")
+  );
+
   const { data: expenses = [] } = useExpenses(
     currentDate.getFullYear(),
-    currentDate.getMonth()
+    currentDate.getMonth(),
+    sortBy
   );
 
   const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
@@ -55,7 +61,35 @@ export function DashboardContent() {
         <ExpenseForm />
       </div>
 
-      <ExpenseList year={currentDate.getFullYear()} month={currentDate.getMonth()} />
+      <div className="flex justify-end gap-3 text-xs items-center">
+        <span className="text-gray-400">sort:</span>
+        <button
+          onClick={() => setSortBy("date")}
+          className={`transition-colors ${
+            sortBy === "date"
+              ? "text-gray-900 underline"
+              : "text-gray-400 hover:text-gray-600"
+          }`}
+        >
+          Date
+        </button>
+        <button
+          onClick={() => setSortBy("amount")}
+          className={`transition-colors ${
+            sortBy === "amount"
+              ? "text-gray-900 underline"
+              : "text-gray-400 hover:text-gray-600"
+          }`}
+        >
+          Amount
+        </button>
+      </div>
+
+      <ExpenseList
+        year={currentDate.getFullYear()}
+        month={currentDate.getMonth()}
+        sortBy={sortBy}
+      />
     </div>
   );
 }
