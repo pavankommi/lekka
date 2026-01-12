@@ -2,24 +2,16 @@
 
 import { format } from "date-fns";
 import { Trash2 } from "lucide-react";
+import { groupBy } from "lodash";
 import { useExpenses, useDeleteExpense } from "./hooks";
 import type { Expense } from "@/lib/types";
 import { toast } from "sonner";
 import { formatCurrency } from "@/lib/currency";
 
 function groupByDay(expenses: Expense[]) {
-  const groups: Record<string, Expense[]> = {};
-
-  expenses.forEach((expense) => {
-    const day = format(new Date(expense.created), "EEE, MMM d");
-
-    if (!groups[day]) {
-      groups[day] = [];
-    }
-    groups[day].push(expense);
-  });
-
-  return groups;
+  return groupBy(expenses, (expense) =>
+    format(new Date(expense.created), "EEE, MMM d")
+  );
 }
 
 export function ExpenseList({ year, month }: { year: number; month: number }) {
