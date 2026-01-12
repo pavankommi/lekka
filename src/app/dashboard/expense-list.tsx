@@ -33,7 +33,7 @@ export function ExpenseList({
     try {
       await deleteMutation.mutateAsync(id);
       toast.success("Expense deleted");
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete expense");
     }
   };
@@ -50,24 +50,51 @@ export function ExpenseList({
     );
   }
 
+  // When sorting by amount, show flat list without day grouping
+  if (sortBy === "amount") {
+    return (
+      <div className="divide-y divide-gray-200">
+        {expenses.map((expense) => {
+          const dateOnly = expense.expenseDate.substring(0, 10);
+          const dateLabel = format(parseISO(dateOnly), "MMM d");
+
+          return (
+            <div
+              key={expense.id}
+              onClick={() => handleDelete(expense.id)}
+              className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-gray-900 truncate">{expense.description}</p>
+                <p className="text-xs text-gray-500">{dateLabel}</p>
+              </div>
+              <p className="text-base font-medium text-gray-900">{formatCurrency(expense.amount)}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // When sorting by date, group by day
   const grouped = groupByDay(expenses);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {Object.entries(grouped).map(([day, dayExpenses]) => (
         <div key={day}>
-          <h3 className="text-sm font-medium text-gray-500 mb-2">{day}</h3>
+          <h3 className="text-xs font-medium text-gray-500 mb-1">{day}</h3>
           <div className="divide-y divide-gray-200">
             {dayExpenses.map((expense) => (
               <div
                 key={expense.id}
                 onClick={() => handleDelete(expense.id)}
-                className="flex items-center justify-between py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{expense.description}</p>
+                  <p className="text-sm text-gray-900 truncate">{expense.description}</p>
                 </div>
-                <p className="text-lg font-semibold text-gray-900">{formatCurrency(expense.amount)}</p>
+                <p className="text-base font-medium text-gray-900">{formatCurrency(expense.amount)}</p>
               </div>
             ))}
           </div>

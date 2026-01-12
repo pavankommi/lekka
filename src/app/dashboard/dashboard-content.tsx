@@ -3,6 +3,7 @@
 import { subMonths, addMonths, format, isSameMonth, startOfMonth, setDate, getDate } from "date-fns";
 import { parseAsIsoDateTime, parseAsStringLiteral, useQueryState } from "nuqs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { sumBy } from "lodash";
 import { ExpenseForm } from "./expense-form";
 import { ExpenseList } from "./expense-list";
 import { useExpenses } from "./hooks";
@@ -25,7 +26,7 @@ export function DashboardContent() {
     sortBy
   );
 
-  const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  const total = sumBy(expenses, "amount");
 
   const monthName = format(currentDate, "MMMM yyyy");
   const isCurrentMonth = isSameMonth(currentDate, new Date());
@@ -37,27 +38,29 @@ export function DashboardContent() {
   const goToNextMonth = () => setCurrentDate(startOfMonth(addMonths(currentDate, 1)));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <button
           onClick={goToPrevMonth}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-900"
+          aria-label="Previous month"
+          className="p-1 hover:bg-gray-100 rounded transition-colors text-gray-900"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5" />
         </button>
-        <h2 className="text-2xl font-semibold text-gray-900">{monthName}</h2>
+        <h2 className="text-lg font-medium text-gray-900">{monthName}</h2>
         <button
           onClick={goToNextMonth}
           disabled={isCurrentMonth}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-gray-900"
+          aria-label="Next month"
+          className="p-1 hover:bg-gray-100 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-gray-900"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-5 h-5" />
         </button>
       </div>
 
-      <div className="text-center py-8">
-        <p className="text-sm text-gray-500 mb-2">Total this month</p>
-        <p className="text-5xl font-bold text-gray-900">{formatCurrency(total)}</p>
+      <div className="text-center py-4">
+        <p className="text-xs text-gray-500 mb-1">Total this month</p>
+        <p className="text-3xl font-bold text-gray-900">{formatCurrency(total)}</p>
       </div>
 
       <div className="space-y-4">

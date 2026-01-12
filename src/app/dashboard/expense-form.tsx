@@ -14,6 +14,8 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
   const form = useForm<ExpenseFormData>({
     resolver: zodResolver(expenseSchema) as Resolver<ExpenseFormData>,
     defaultValues: {
+      description: "",
+      amount: "" as unknown as number,
       date: format(defaultDate, "yyyy-MM-dd"),
     },
   });
@@ -28,6 +30,8 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
   // Update date field when user switches months
   useEffect(() => {
     reset({
+      description: "",
+      amount: "" as unknown as number,
       date: format(defaultDate, "yyyy-MM-dd"),
     });
   }, [defaultDate, reset]);
@@ -38,10 +42,10 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
       toast.success("Expense added");
       reset({
         description: "",
-        amount: 0,
+        amount: "" as unknown as number,
         date: format(defaultDate, "yyyy-MM-dd"),
       });
-    } catch (error) {
+    } catch {
       toast.error("Failed to add expense");
     }
   };
