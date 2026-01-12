@@ -41,6 +41,7 @@ export function DashboardContent() {
       <div className="flex items-center justify-between">
         <button
           onClick={goToPrevMonth}
+          aria-label="Previous month"
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-900"
         >
           <ChevronLeft className="w-6 h-6" />
@@ -49,6 +50,7 @@ export function DashboardContent() {
         <button
           onClick={goToNextMonth}
           disabled={isCurrentMonth}
+          aria-label="Next month"
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-gray-900"
         >
           <ChevronRight className="w-6 h-6" />
