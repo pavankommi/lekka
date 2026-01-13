@@ -4,6 +4,7 @@ import { createBrowserClient } from "@/lib/pocketbase-client";
 import { useRouter } from "next/navigation";
 import { setAuthCookie } from "./actions";
 import { toast } from "sonner";
+import { parse } from "cookie";
 
 export function GoogleSignIn() {
   const router = useRouter();
@@ -14,9 +15,9 @@ export function GoogleSignIn() {
       await pb.collection("users").authWithOAuth2({ provider: "google" });
 
       const cookieString = pb.authStore.exportToCookie();
-      const tokenMatch = cookieString.match(/pb_auth=([^;]+)/);
-      if (tokenMatch) {
-        await setAuthCookie(tokenMatch[1]);
+      const cookies = parse(cookieString);
+      if (cookies.pb_auth) {
+        await setAuthCookie(cookies.pb_auth);
       }
 
       router.refresh();
