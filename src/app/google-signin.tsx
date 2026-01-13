@@ -13,14 +13,12 @@ export function GoogleSignIn() {
     try {
       await pb.collection("users").authWithOAuth2({ provider: "google" });
 
-      // Sync auth to server-side cookie
       const cookieString = pb.authStore.exportToCookie();
       const tokenMatch = cookieString.match(/pb_auth=([^;]+)/);
       if (tokenMatch) {
         await setAuthCookie(tokenMatch[1]);
       }
 
-      // Refresh to revalidate server components
       router.refresh();
       router.push("/");
     } catch (error) {

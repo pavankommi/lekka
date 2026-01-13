@@ -16,7 +16,6 @@ export async function getExpenses(
     return [];
   }
 
-  // Use date-fns for cleaner date formatting
   const startDate = format(new Date(year, month, 1), "yyyy-MM-dd");
   const nextMonthDate = addMonths(new Date(year, month, 1), 1);
   const nextMonthStr = format(nextMonthDate, "yyyy-MM-dd");
@@ -38,7 +37,6 @@ export async function addExpense(description: string, amount: number, date: stri
     throw new Error("Not authenticated");
   }
 
-  // Server-side validation
   const validated = expenseSchema.parse({ description, amount, date });
 
   await pb.collection<Expense>("expenses").create({
@@ -56,7 +54,6 @@ export async function deleteExpense(id: string) {
     throw new Error("Not authenticated");
   }
 
-  // Verify ownership before deleting
   const expense = await pb.collection<Expense>("expenses").getOne(id);
 
   if (expense.user !== pb.authStore.record?.id) {
