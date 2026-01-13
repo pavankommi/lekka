@@ -29,8 +29,8 @@ export function GoogleSignIn() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      <h1 className="text-4xl font-semibold text-gray-900">Welcome to Lekka</h1>
+    <div className="flex flex-col items-center gap-8 px-4 py-8">
+      <h1 className="text-4xl font-semibold text-gray-900">Something to track your expenses</h1>
       <button onClick={handleSignIn} className="gsi-material-button">
         <div className="gsi-material-button-state"></div>
         <div className="gsi-material-button-content-wrapper">
