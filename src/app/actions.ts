@@ -2,9 +2,9 @@
 
 import { cookies } from "next/headers";
 
-export async function setAuthCookie(token: string) {
+export async function setAuthCookie(authData: { token: string; record: any }) {
   const cookieStore = await cookies();
-  cookieStore.set("pb_auth", token, {
+  cookieStore.set("pb_auth", JSON.stringify(authData), {
     httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
