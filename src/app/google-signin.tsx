@@ -4,6 +4,7 @@ import { createBrowserClient } from "@/lib/pocketbase-client";
 import { useRouter } from "next/navigation";
 import { setAuthCookie } from "./actions";
 import { toast } from "sonner";
+import { parse } from "cookie";
 
 export function GoogleSignIn() {
   const router = useRouter();
@@ -13,14 +14,12 @@ export function GoogleSignIn() {
     try {
       await pb.collection("users").authWithOAuth2({ provider: "google" });
 
-      // Sync auth to server-side cookie
       const cookieString = pb.authStore.exportToCookie();
-      const tokenMatch = cookieString.match(/pb_auth=([^;]+)/);
-      if (tokenMatch) {
-        await setAuthCookie(tokenMatch[1]);
+      const cookies = parse(cookieString);
+      if (cookies.pb_auth) {
+        await setAuthCookie(cookies.pb_auth);
       }
 
-      // Refresh to revalidate server components
       router.refresh();
       router.push("/");
     } catch (error) {
@@ -30,8 +29,8 @@ export function GoogleSignIn() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      <h1 className="text-4xl font-semibold text-gray-900">Welcome to Lekka</h1>
+    <div className="flex flex-col items-center gap-8 px-4 py-8">
+      <h1 className="text-4xl font-semibold text-gray-900">Something to track your expenses</h1>
       <button onClick={handleSignIn} className="gsi-material-button">
         <div className="gsi-material-button-state"></div>
         <div className="gsi-material-button-content-wrapper">

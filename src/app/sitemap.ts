@@ -1,17 +1,17 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://lekka.example.com";
+  const url = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   return [
     {
-      url: baseUrl,
+      url: url,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
-      url: `${baseUrl}/privacy`,
+      url: `${url}/privacy`,
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.5,

@@ -27,7 +27,6 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
     formState: { errors, isSubmitting },
   } = form;
 
-  // Update date field when user switches months
   useEffect(() => {
     reset({
       description: "",

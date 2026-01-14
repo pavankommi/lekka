@@ -9,7 +9,6 @@ import { formatCurrency } from "@/lib/currency";
 
 function groupByDay(expenses: Expense[]) {
   return groupBy(expenses, (expense) => {
-    // Extract date portion (YYYY-MM-DD) to avoid timezone shifts
     const dateOnly = expense.expenseDate.substring(0, 10);
     return format(parseISO(dateOnly), "EEE, MMM d");
   });
@@ -24,7 +23,7 @@ export function ExpenseList({
   month: number;
   sortBy: "date" | "amount";
 }) {
-  const { data: expenses = [], isLoading } = useExpenses(year, month, sortBy);
+  const { data: expenses = [], isLoading, error } = useExpenses(year, month, sortBy);
   const deleteMutation = useDeleteExpense();
 
   const handleDelete = async (id: string) => {
@@ -42,6 +41,14 @@ export function ExpenseList({
     return <p className="text-gray-500 text-center py-8">Loading...</p>;
   }
 
+  if (error) {
+    return (
+      <p className="text-red-600 text-center py-8">
+        Failed to load expenses. Please try again.
+      </p>
+    );
+  }
+
   if (expenses.length === 0) {
     return (
       <p className="text-gray-500 text-center py-8">
@@ -50,7 +57,6 @@ export function ExpenseList({
     );
   }
 
-  // When sorting by amount, show flat list without day grouping
   if (sortBy === "amount") {
     return (
       <div className="divide-y divide-gray-200">
@@ -76,7 +82,6 @@ export function ExpenseList({
     );
   }
 
-  // When sorting by date, group by day
   const grouped = groupByDay(expenses);
 
   return (

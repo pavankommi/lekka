@@ -1,6 +1,6 @@
 "use client";
 
-import { subMonths, addMonths, format, isSameMonth, startOfMonth, setDate, getDate } from "date-fns";
+import { subMonths, addMonths, format, isSameMonth, startOfMonth, setDate, getDate, endOfMonth } from "date-fns";
 import { parseAsIsoDateTime, parseAsStringLiteral, useQueryState } from "nuqs";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { sumBy } from "lodash";
@@ -31,8 +31,10 @@ export function DashboardContent() {
   const monthName = format(currentDate, "MMMM yyyy");
   const isCurrentMonth = isSameMonth(currentDate, new Date());
 
-  // Default date: selected month/year, but with today's day
-  const defaultFormDate = setDate(currentDate, getDate(new Date()));
+  const todayDay = getDate(new Date());
+  const lastDayOfTargetMonth = getDate(endOfMonth(currentDate));
+  const safeDayOfMonth = Math.min(todayDay, lastDayOfTargetMonth);
+  const defaultFormDate = setDate(currentDate, safeDayOfMonth);
 
   const goToPrevMonth = () => setCurrentDate(startOfMonth(subMonths(currentDate, 1)));
   const goToNextMonth = () => setCurrentDate(startOfMonth(addMonths(currentDate, 1)));
