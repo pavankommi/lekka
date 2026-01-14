@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/pocketbase";
 import { GoogleSignIn } from "./google-signin";
 import { SignOut } from "./dashboard/sign-out";
 import { DashboardContent } from "./dashboard/dashboard-content";
+import { SyncAuth } from "./sync-auth";
 
 export default async function Home() {
   const user = await getCurrentUser();
@@ -9,6 +10,7 @@ export default async function Home() {
   if (user) {
     return (
       <div className="flex-1 bg-white">
+        <SyncAuth />
         <div className="max-w-2xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-8">
             <div>
