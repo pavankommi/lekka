@@ -16,11 +16,6 @@ export async function getServerPB() {
   return pb;
 }
 
-export async function isAuthenticated() {
-  const pb = await getServerPB();
-  return pb.authStore.isValid;
-}
-
 export async function getCurrentUser() {
   const pb = await getServerPB();
   return pb.authStore.record;
