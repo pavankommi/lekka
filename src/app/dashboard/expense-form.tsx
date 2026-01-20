@@ -85,7 +85,7 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
             <input
               {...register("date")}
               type="date"
-              className="w-full px-4 py-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900"
+              className="w-full pl-4 pr-3.5 py-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900"
               disabled={isSubmitting}
             />
             {errors.date && (

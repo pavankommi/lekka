@@ -11,8 +11,8 @@ export default async function Home() {
     return (
       <div className="flex-1 bg-white">
         <SyncAuth />
-        <div className="max-w-2xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-between mb-8">
+        <div className="max-w-2xl mx-auto px-4 pt-4 pb-6">
+          <div className="flex items-center justify-between mb-6">
             <div>
               <p className="text-sm text-gray-600">{user.email}</p>
               <h1 className="text-xl font-semibold text-gray-900">Lekka</h1>

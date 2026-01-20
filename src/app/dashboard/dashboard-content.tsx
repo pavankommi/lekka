@@ -48,7 +48,7 @@ export function DashboardContent() {
         <button
           onClick={goToPrevMonth}
           aria-label="Previous month"
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-900"
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-900"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -57,7 +57,7 @@ export function DashboardContent() {
           onClick={goToNextMonth}
           disabled={isCurrentMonth}
           aria-label="Next month"
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-gray-900"
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-gray-900"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -96,7 +96,7 @@ export function DashboardContent() {
         </button>
         <button
           onClick={() => setHideDescriptions(!hideDescriptions)}
-          className="p-1.5 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
           aria-label={hideDescriptions ? "Show descriptions" : "Hide descriptions"}
         >
           {hideDescriptions ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
