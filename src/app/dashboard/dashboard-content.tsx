@@ -2,12 +2,13 @@
 
 import { subMonths, addMonths, format, isSameMonth, startOfMonth, setDate, getDate, endOfMonth } from "date-fns";
 import { parseAsIsoDateTime, parseAsStringLiteral, useQueryState } from "nuqs";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, EyeOff } from "lucide-react";
 import { sumBy } from "lodash";
 import { ExpenseForm } from "./expense-form";
 import { ExpenseList } from "./expense-list";
 import { useExpenses } from "./hooks";
 import { formatCurrency } from "@/lib/currency";
+import { useState } from "react";
 
 export function DashboardContent() {
   const [currentDate, setCurrentDate] = useQueryState(
@@ -19,6 +20,8 @@ export function DashboardContent() {
     "sort",
     parseAsStringLiteral(["date", "amount"] as const).withDefault("date")
   );
+
+  const [hideDescriptions, setHideDescriptions] = useState(false);
 
   const { data: expenses = [] } = useExpenses(
     currentDate.getFullYear(),
@@ -45,7 +48,7 @@ export function DashboardContent() {
         <button
           onClick={goToPrevMonth}
           aria-label="Previous month"
-          className="p-1 hover:bg-gray-100 rounded transition-colors text-gray-900"
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-900"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -54,7 +57,7 @@ export function DashboardContent() {
           onClick={goToNextMonth}
           disabled={isCurrentMonth}
           aria-label="Next month"
-          className="p-1 hover:bg-gray-100 rounded transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-gray-900"
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-gray-900"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -91,12 +94,20 @@ export function DashboardContent() {
         >
           Amount
         </button>
+        <button
+          onClick={() => setHideDescriptions(!hideDescriptions)}
+          className="p-1.5 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
+          aria-label={hideDescriptions ? "Show descriptions" : "Hide descriptions"}
+        >
+          {hideDescriptions ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+        </button>
       </div>
 
       <ExpenseList
         year={currentDate.getFullYear()}
         month={currentDate.getMonth()}
         sortBy={sortBy}
+        hideDescriptions={hideDescriptions}
       />
     </div>
   );
