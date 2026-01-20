@@ -58,7 +58,7 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
             type="text"
             placeholder="Description"
             maxLength={100}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900 placeholder:text-gray-400"
+            className="w-full px-4 py-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900 placeholder:text-gray-400"
             disabled={isSubmitting}
           />
           {errors.description && (
@@ -73,7 +73,7 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
               type="number"
               placeholder="0.00"
               step="0.01"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900 placeholder:text-gray-400"
+              className="w-full px-4 py-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900 placeholder:text-gray-400"
               disabled={isSubmitting}
             />
             {errors.amount && (
@@ -85,7 +85,7 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
             <input
               {...register("date")}
               type="date"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900"
+              className="w-full px-4 py-3 border border-gray-300 rounded-3xl focus:outline-none focus:ring-2 focus:ring-gray-900 text-gray-900"
               disabled={isSubmitting}
             />
             {errors.date && (
@@ -98,7 +98,7 @@ export function ExpenseForm({ defaultDate }: { defaultDate: Date }) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full px-6 py-3 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Add Expense
       </button>
