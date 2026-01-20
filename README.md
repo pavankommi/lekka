@@ -1,14 +1,8 @@
 # Lekka
 
-Something to track my expenses.
+Something to track your expenses.
 
-## Setup
-
-```bash
-npm install
-cp .env.example .env.local
-npm run dev
-```
+**Live:** [lekka.fyi](https://lekka.fyi/)
 
 ## Built with
 

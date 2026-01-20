@@ -18,10 +18,12 @@ export function ExpenseList({
   year,
   month,
   sortBy,
+  hideDescriptions = false,
 }: {
   year: number;
   month: number;
   sortBy: "date" | "amount";
+  hideDescriptions?: boolean;
 }) {
   const { data: expenses = [], isLoading, error } = useExpenses(year, month, sortBy);
   const deleteMutation = useDeleteExpense();
@@ -71,7 +73,7 @@ export function ExpenseList({
               className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-gray-900 truncate">{expense.description}</p>
+                <p className={`text-sm text-gray-900 truncate ${hideDescriptions ? "blur-sm select-none" : ""}`}>{expense.description}</p>
                 <p className="text-xs text-gray-500">{dateLabel}</p>
               </div>
               <p className="text-base font-medium text-gray-900">{formatCurrency(expense.amount)}</p>
@@ -97,7 +99,7 @@ export function ExpenseList({
                 className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-900 truncate">{expense.description}</p>
+                  <p className={`text-sm text-gray-900 truncate ${hideDescriptions ? "blur-sm select-none" : ""}`}>{expense.description}</p>
                 </div>
                 <p className="text-base font-medium text-gray-900">{formatCurrency(expense.amount)}</p>
               </div>
